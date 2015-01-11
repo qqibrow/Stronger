@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE tsung SYSTEM "/usr/share/tsung/tsung-1.0.dtd">
+<tsung loglevel="notice" version="1.0">
+
+  <!-- Client side setup -->
+  <clients>
+    <client host="localhost" use_controller_vm="true"/>
+  </clients>
+
+  <!-- Server side setup -->
+<servers>
+  <server host="myserver" port="80" type="tcp"></server>
+</servers>
+
+  <!-- to start os monitoring (cpu, network, memory). Use an erlang
+  agent on the remote machine or SNMP. erlang is the default -->
+  <monitoring>
+    <monitor host="myserver" type="snmp"></monitor>
+  </monitoring>
+
+  <load>
+  <!-- several arrival phases can be set: for each phase, you can set
+  the mean inter-arrival time between new clients and the phase
+  duration -->
+   <arrivalphase phase="1" duration="10" unit="minute">
+     <users interarrival="2" unit="second"></users>
+   </arrivalphase>
+  </load>
+
+  <!-- start a session for a http user. the probability is the
+  frequency of this type os session. The sum of all session's
+  probabilities must be 100 -->
+
+ <sessions>
+  <session name="http-example" probability="100" type="ts_http">
+    <!-- full url with server name, this overrides the "server" config value -->
+    <request> <http url="/" method="GET" version="1.1"></http> </request>
+  </session>
+ </sessions>
+</tsung>
